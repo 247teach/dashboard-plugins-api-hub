@@ -27,6 +27,7 @@ async function enrichStandardsWithRelations(standards: any[]) {
   return standards.map((standard) => ({
     id: standard.id,
     standard_code: standard.standard_code,
+    description: standard.description,
     created_at: standard.created_at,
     module: modulesMap.get(standard.module_id) || null,
     topic: topicsMap.get(standard.topic_id) || null,
@@ -38,7 +39,7 @@ router.get('/standards', async (_req: AuthRequest, res: Response): Promise<void>
   try {
     const { data: standards, error } = await mathPluginSupabase
       .from('standards')
-      .select('id, standard_code, module_id, topic_id, created_at');
+      .select('id, standard_code, description, module_id, topic_id, created_at');
 
     if (error) {
       res.status(500).json({ error: 'Failed to fetch standards', details: error.message });
@@ -72,7 +73,7 @@ router.get('/standards/:id', async (req: AuthRequest, res: Response): Promise<vo
 
     const { data: standard, error } = await mathPluginSupabase
       .from('standards')
-      .select('id, standard_code, module_id, topic_id, created_at')
+      .select('id, standard_code, description, module_id, topic_id, created_at')
       .eq('id', id)
       .single();
 
@@ -90,6 +91,7 @@ router.get('/standards/:id', async (req: AuthRequest, res: Response): Promise<vo
     const enrichedStandard = {
       id: standard.id,
       standard_code: standard.standard_code,
+      description: standard.description,
       created_at: standard.created_at,
       module: moduleResponse.data || null,
       topic: topicResponse.data || null,

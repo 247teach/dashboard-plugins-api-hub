@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(powershell.exe -c \"[console]::beep(1000,500)\")"
     ],
     "deny": [],
     "ask": []
